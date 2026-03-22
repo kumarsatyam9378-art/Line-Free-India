@@ -419,10 +419,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const saveBarberProfile = async (p: BarberProfile): Promise<boolean> => {
-    setBarberProfile(p); // Save locally immediately — this is instant
-    // Fire-and-forget: start background sync, don't await
-    syncBarberToFirestore(p);
-    return true; // Always return true — navigation is never blocked
+    setBarberProfile(p); // Save locally immediately — this is instant for UI updates
+    return await syncBarberToFirestore(p); // Block until Firestore sync completes
   };
 
   const retrySyncBarberProfile = async (): Promise<boolean> => {
